@@ -22,4 +22,23 @@ export const projects = [
     github: null,
     demo: null,
   },
+  {
+    id: 'ppdb-smp',
+    placeholder: false,
+    title: 'Sistem PPDB SMP di Kota Padang',
+    kind: 'Proyek kelompok akademik', // label kecil di kartu; kosongkan (null) untuk menyembunyikan
+    summary:
+      'Sistem penerimaan peserta didik baru (PPDB) berbasis web untuk SMP di Kota Padang. Saya terlibat dalam pengembangannya bersama tim.',
+    image: '/assets/projects/ppdb-smp.jpg',
+    imageAlt: 'Halaman beranda sistem PPDB SMP 2026',
+    tech: ['PHP', 'MySQL', 'HTML', 'CSS'],
+    status: null,
+    role: 'Anggota tim pengembang',
+    features: [
+      'Mengembangkan fitur sistem berdasarkan kebutuhan proyek',
+      'Berkolaborasi dengan anggota tim selama proses pengembangan',
+    ],
+    github: null,
+    demo: null,
+  },
 ]

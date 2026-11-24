@@ -1,4 +1,5 @@
-@import '@fontsource-variable/plus-jakarta-sans';
+@import '@fontsource-variable/bricolage-grotesque';
+@import '@fontsource-variable/figtree';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,15 +7,21 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    scroll-padding-top: 5rem;
+    scroll-padding-top: 6rem;
   }
   body {
-    @apply bg-white font-sans text-ink antialiased;
+    @apply bg-paper font-sans text-ink antialiased;
+  }
+  h1, h2, h3, h4 {
+    @apply font-display;
   }
   :focus-visible {
-    outline: 3px solid #7C3AED;
+    outline: 3px solid #6C3FEF;
     outline-offset: 3px;
-    border-radius: 6px;
+    border-radius: 8px;
+  }
+  .on-dark :focus-visible {
+    outline-color: #FFCF4D;
   }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
@@ -29,25 +36,39 @@
 @layer components {
   .section-pad { @apply px-5 py-20 sm:px-8 md:py-28; }
   .container-x { @apply mx-auto w-full max-w-6xl; }
+
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold transition-colors duration-200;
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-bold transition-all duration-200;
   }
-  .btn-primary { @apply bg-brand-500 text-white hover:bg-brand-700; }
-  .btn-outline { @apply border-2 border-brand-500 text-brand-600 hover:bg-brand-50; }
-  .tag { @apply rounded-full bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700; }
-  .placeholder-badge { @apply rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-semibold text-amber-900; }
+  .btn-primary { @apply bg-brand-600 text-white hover:-translate-y-0.5 hover:bg-brand-700; }
+  .btn-outline { @apply border-2 border-ink text-ink hover:bg-ink hover:text-white; }
+  .btn-sun { @apply bg-sun text-ink hover:-translate-y-0.5 hover:bg-white; }
+  .btn-ghost-light { @apply border-2 border-white/40 text-white hover:border-white hover:bg-white/10; }
+
+  .chip {
+    @apply inline-flex items-center rounded-full border border-brand-600/20 bg-white px-4 py-1.5 text-sm font-semibold text-brand-700;
+  }
+  .chip-dark {
+    @apply inline-flex items-center rounded-full border border-white/20 bg-white/5 px-3 py-1 text-sm font-semibold text-white/90;
+  }
+  .placeholder-badge { @apply rounded-full bg-sun px-2.5 py-0.5 text-xs font-bold text-ink; }
 }
 
+/* Bentuk organik di belakang foto */
 @keyframes blob-morph {
-  0%, 100% { border-radius: 58% 42% 55% 45% / 48% 56% 44% 52%; }
-  50% { border-radius: 44% 56% 42% 58% / 55% 45% 55% 45%; }
+  0%, 100% { border-radius: 58% 42% 52% 48% / 46% 54% 46% 54%; }
+  50% { border-radius: 46% 54% 44% 56% / 56% 44% 56% 44%; }
 }
-.blob-shape { animation: blob-morph 14s ease-in-out infinite; }
+.blob-shape { animation: blob-morph 16s ease-in-out infinite; }
 
-@keyframes hero-in {
-  from { opacity: 0; transform: translateY(16px); }
+/* Satu momen pembuka: nama naik, foto menyusul */
+@keyframes rise {
+  from { transform: translateY(105%); }
+  to { transform: none; }
+}
+@keyframes photo-in {
+  from { opacity: 0; transform: translateY(40px); }
   to { opacity: 1; transform: none; }
 }
-.hero-in { animation: hero-in 0.7s ease-out both; }
-.hero-in-2 { animation-delay: 0.12s; }
-.hero-in-3 { animation-delay: 0.24s; }
+.rise { animation: rise 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.photo-in { animation: photo-in 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) 0.25s both; }

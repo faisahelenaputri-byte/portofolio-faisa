@@ -14,13 +14,21 @@ const links = [
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
+  const [active, setActive] = useState('#beranda')
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8)
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    const ids = links.map((l) => l.href.slice(1))
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => e.isIntersecting && setActive(`#${e.target.id}`))
+      },
+      { rootMargin: '-35% 0px -60% 0px' }
+    )
+    ids.forEach((id) => {
+      const el = document.getElementById(id)
+      if (el) observer.observe(el)
+    })
+    return () => observer.disconnect()
   }, [])
 
   useEffect(() => {
@@ -31,21 +39,26 @@ export default function Navbar() {
   }, [open])
 
   return (
-    <header
-      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-200 ${
-        scrolled || open ? 'border-b border-brand-100 bg-white/95 backdrop-blur' : 'bg-transparent'
-      }`}
-    >
-      <nav className="container-x flex h-16 items-center justify-between px-5 sm:px-8" aria-label="Navigasi utama">
-        <a href="#beranda" className="text-lg font-extrabold tracking-tight text-brand-600">
+    <header className="fixed inset-x-0 top-3 z-50 px-3 sm:px-6">
+      <nav
+        className="mx-auto flex h-14 max-w-5xl items-center justify-between rounded-full border border-ink/10 bg-white/85 pl-6 pr-2 backdrop-blur-md"
+        aria-label="Navigasi utama"
+      >
+        <a href="#beranda" className="font-display text-xl font-extrabold tracking-tight text-brand-600">
           {profile.shortName}
-          <span className="text-ink">.</span>
+          <span className="text-sun">.</span>
         </a>
 
-        <ul className="hidden items-center gap-8 md:flex">
+        <ul className="hidden items-center gap-1 md:flex">
           {links.map((l) => (
             <li key={l.href}>
-              <a href={l.href} className="text-sm font-medium text-ink-soft transition-colors hover:text-brand-600">
+              <a
+                href={l.href}
+                aria-current={active === l.href ? 'true' : undefined}
+                className={`rounded-full px-3.5 py-2 text-sm font-semibold transition-colors ${
+                  active === l.href ? 'bg-brand-600 text-white' : 'text-ink-soft hover:bg-brand-50 hover:text-brand-700'
+                }`}
+              >
                 {l.label}
               </a>
             </li>
@@ -54,24 +67,27 @@ export default function Navbar() {
 
         <button
           type="button"
-          className="rounded-full p-2 text-ink md:hidden"
+          className="rounded-full p-2.5 text-ink md:hidden"
           aria-label={open ? 'Tutup menu' : 'Buka menu'}
           aria-expanded={open}
           aria-controls="menu-mobile"
           onClick={() => setOpen((v) => !v)}
         >
-          {open ? <X size={24} /> : <Menu size={24} />}
+          {open ? <X size={22} /> : <Menu size={22} />}
         </button>
       </nav>
 
       {open && (
-        <ul id="menu-mobile" className="border-t border-brand-100 bg-white px-5 pb-5 pt-2 md:hidden">
+        <ul
+          id="menu-mobile"
+          className="mx-auto mt-2 max-w-5xl rounded-3xl border border-ink/10 bg-white p-2 md:hidden"
+        >
           {links.map((l) => (
             <li key={l.href}>
               <a
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="block rounded-xl px-3 py-3 text-base font-medium text-ink hover:bg-brand-50"
+                className="block rounded-2xl px-4 py-3 text-base font-semibold text-ink hover:bg-brand-50"
               >
                 {l.label}
               </a>
